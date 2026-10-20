@@ -1,0 +1,20 @@
+BT com' — Préparation pour hébergement sur Render
+
+Ce site est un site statique léger : pas de framework ni de dépendance.
+Les liens locaux et les ressources (CSS, JavaScript, logo SVG) ont été vérifiés.
+
+HÉBERGEMENT
+- Créer un dépôt Git distinct pour BT com' (ne pas utiliser le dépôt « Vos Bancs font la Pause »).
+- Ajouter les fichiers de cette archive à la racine du dépôt.
+- Dans Render, créer un Static Site à partir du dépôt OU utiliser le fichier render.yaml (Blueprint).
+- Une URL *.onrender.com sera proposée par Render après le déploiement réussi.
+- Ajouter ensuite btcommunication.fr et www.btcommunication.fr aux domaines personnalisés de Render.
+- WordPress.com reste le registrar du domaine : ne changer que les DNS du site, sans toucher à ceux de la messagerie.
+
+IMPORTANT AVANT OUVERTURE AU PUBLIC
+- Les pages Mentions légales et Confidentialité contiennent des champs à renseigner.
+- Il faut confirmer l'identité professionnelle, le SIREN/SIRET, l'adresse de contact et l'hébergeur.
+- Le formulaire actuel COPIE la demande sans l'envoyer : choisir une adresse e-mail ou un service de formulaire avant de l'utiliser en production.
+- Ne pas modifier les enregistrements MX / SPF / DKIM sans avoir identifié le service de messagerie.
+
+Domaine : btcommunication.fr, enregistré chez WordPress.com.

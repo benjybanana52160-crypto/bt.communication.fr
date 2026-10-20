@@ -1,0 +1,15 @@
+# BT com' — site vitrine statique
+# Déployer via « New » > « Blueprint » après ajout des fichiers à un dépôt Git.
+services:
+  - type: web
+    name: bt-com-site-vitrine
+    runtime: static
+    buildCommand: echo "BT com - fichiers statiques prêts"
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin

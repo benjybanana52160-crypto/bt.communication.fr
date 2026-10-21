@@ -43,6 +43,16 @@
       if (event.matches) document.documentElement.classList.remove('motion-ready');
     });
   }
+  const motionToggle = document.querySelector('.motion-toggle');
+  if (motionToggle && !reducedMotion.matches) {
+    motionToggle.hidden = false;
+    motionToggle.addEventListener('click', () => {
+      const paused = document.documentElement.classList.toggle('motion-paused');
+      motionToggle.setAttribute('aria-pressed', String(paused));
+      motionToggle.setAttribute('aria-label', paused ? 'Reprendre les animations' : 'Mettre les animations en pause');
+      motionToggle.querySelector('span').textContent = paused ? '▶' : 'Ⅱ';
+    });
+  }
   const progress = document.querySelector('.reading-progress');
   const header = document.querySelector('.header');
   let scrollFrame = false;

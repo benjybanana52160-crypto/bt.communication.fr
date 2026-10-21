@@ -12,6 +12,52 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
     document.addEventListener('click', e => { if (!e.target.closest('.header-inner')) setOpen(false); });
   }
+  // Keep every collection visible when JavaScript is unavailable.
+  const filters = [...document.querySelectorAll('[data-filter]')];
+  const groups = [...document.querySelectorAll('[data-category]')];
+  filters.forEach(button => button.addEventListener('click', () => {
+    const selected = button.dataset.filter;
+    filters.forEach(item => {
+      const active = item === button;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    groups.forEach(group => { group.hidden = selected !== 'all' && group.dataset.category !== selected; });
+    const live = document.querySelector('.filter-status');
+    if (live) live.textContent = selected === 'all' ? 'Toutes les réalisations sont affichées.' : button.textContent + ' : réalisations affichées.';
+  }));
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    }), { threshold: 0.08 });
+    document.querySelectorAll('.section-title-row, .service-item, .method-step, .project-group-head, .work-card, .portfolio-end, .contact-copy, .form-shell').forEach(element => {
+      element.classList.add('reveal');
+      observer.observe(element);
+    });
+    document.documentElement.classList.add('motion-ready');
+    reducedMotion.addEventListener('change', event => {
+      if (event.matches) document.documentElement.classList.remove('motion-ready');
+    });
+  }
+  const progress = document.querySelector('.reading-progress');
+  const header = document.querySelector('.header');
+  let scrollFrame = false;
+  const updateScroll = () => {
+    const distance = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = `scaleX(${distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 0})`;
+    header?.classList.toggle('has-scrolled', window.scrollY > 20);
+    scrollFrame = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!scrollFrame) { scrollFrame = true; requestAnimationFrame(updateScroll); }
+  }, { passive: true });
+  window.addEventListener('resize', updateScroll);
+  filters.forEach(button => button.addEventListener('click', updateScroll));
+  updateScroll();
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
   const form = document.getElementById('contact-form');

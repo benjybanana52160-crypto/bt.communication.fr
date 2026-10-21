@@ -50,11 +50,11 @@
     button.addEventListener('click', () => {
       const flipped = card.classList.toggle('is-flipped');
       button.setAttribute('aria-pressed', String(flipped));
-      button.innerHTML = (flipped ? 'Revoir la création' : 'Voir l’enseigne installée') + ' <span aria-hidden="true">↻</span>';
+      button.innerHTML = (flipped ? 'Revoir la création' : (button.dataset.installLabel || 'Voir l’enseigne installée')) + ' <span aria-hidden="true">↻</span>';
       front.setAttribute('aria-hidden', String(flipped));
       back.setAttribute('aria-hidden', String(!flipped));
       zoom.href = card.querySelector(flipped ? '.flip-back img' : '.flip-front img').src;
-      status.textContent = flipped ? 'Photo de l’enseigne installée affichée.' : 'Création graphique affichée.';
+      status.textContent = flipped ? 'Photo du support installé affichée.' : 'Création graphique affichée.';
     });
   });
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

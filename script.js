@@ -26,6 +26,20 @@
     const live = document.querySelector('.filter-status');
     if (live) live.textContent = selected === 'all' ? 'Toutes les réalisations sont affichées.' : button.textContent + ' : réalisations affichées.';
   }));
+  document.querySelectorAll('.support-carousel').forEach(carousel => {
+    const controls = [...document.querySelectorAll('[data-carousel]')].filter(button => button.dataset.carousel === carousel.id);
+    const update = () => controls.forEach(button => {
+      button.disabled = Number(button.dataset.direction) < 0 ? carousel.scrollLeft <= 2 : carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 2;
+    });
+    controls.forEach(button => button.addEventListener('click', () => {
+      const card = carousel.querySelector('.work-card');
+      const gap = parseFloat(getComputedStyle(carousel).gap) || 0;
+      carousel.scrollBy({ left: Number(button.dataset.direction) * ((card?.getBoundingClientRect().width || carousel.clientWidth) + gap), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    }));
+    carousel.addEventListener('scroll', update, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(carousel);
+    update();
+  });
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!reducedMotion.matches && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {

@@ -40,6 +40,23 @@
     if ('ResizeObserver' in window) new ResizeObserver(update).observe(carousel);
     update();
   });
+  document.querySelectorAll('.flip-project').forEach(card => {
+    const button = card.querySelector('.flip-toggle');
+    const front = card.querySelector('.flip-front');
+    const back = card.querySelector('.flip-back');
+    const zoom = card.querySelector('.flip-enlarge');
+    const status = card.querySelector('.flip-status');
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const flipped = card.classList.toggle('is-flipped');
+      button.setAttribute('aria-pressed', String(flipped));
+      button.innerHTML = (flipped ? 'Revoir la création' : 'Voir l’enseigne installée') + ' <span aria-hidden="true">↻</span>';
+      front.setAttribute('aria-hidden', String(flipped));
+      back.setAttribute('aria-hidden', String(!flipped));
+      zoom.href = card.querySelector(flipped ? '.flip-back img' : '.flip-front img').src;
+      status.textContent = flipped ? 'Photo de l’enseigne installée affichée.' : 'Création graphique affichée.';
+    });
+  });
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!reducedMotion.matches && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
